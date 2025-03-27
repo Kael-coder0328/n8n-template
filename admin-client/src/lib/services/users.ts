@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { API_URL } from '@/lib/config';
 import { getAuthToken } from './auth';
 

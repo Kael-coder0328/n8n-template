@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { NewsletterSubscription, getNewsletterSubscriptions } from '@/lib/services/newsletter';
-import Loading from '@/components/ui/loading';
 import Error from '@/components/ui/error';
 import ClientOnly from '@/components/client-only';
 import { formatDate } from '@/lib/utils/format';

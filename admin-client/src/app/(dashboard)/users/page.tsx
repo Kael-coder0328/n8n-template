@@ -4,7 +4,7 @@ import React, { useCallback } from 'react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { getUsers } from '@/lib/services/users';
-import type { User, GetUsersResponse } from '@/lib/services/users';
+import type { User} from '@/lib/services/users';
 import Loading from '@/components/ui/loading';
 import Error from '@/components/ui/error';
 import ClientOnly from '@/components/client-only';

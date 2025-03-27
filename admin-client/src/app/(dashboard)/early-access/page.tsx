@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from 'react';
 import { EarlyAccess, getEarlyAccessRegistrations } from '@/lib/services/early-access';
-import Loading from '@/components/ui/loading';
 import Error from '@/components/ui/error';
 import ClientOnly from '@/components/client-only';
 import { formatDate } from '@/lib/utils/format';

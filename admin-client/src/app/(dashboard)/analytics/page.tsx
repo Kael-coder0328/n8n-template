@@ -2,7 +2,6 @@
 
 import { useState, useMemo } from 'react';
 import { getUserJourney, getVisitorJourney, getPageViewStats, type PageView } from '@/lib/services/analytics';
-import Loading from '@/components/ui/loading';
 import Error from '@/components/ui/error';
 import { formatDate, formatDuration } from '@/lib/utils/format';
 
