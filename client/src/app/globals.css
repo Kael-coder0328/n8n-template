@@ -1,0 +1,466 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Add these styles at the end of the file */
+
+/* GitHub-style markdown formatting */
+.prose pre {
+  padding: 16px; /* Base padding */
+  padding-top: 20px; /* Extra top padding for the macOS controls */
+  padding-left: 70px; /* Add left padding to avoid text overlapping with the macOS dots */
+  background-color: #1e1e1e; /* Dark background for light theme */
+  border-radius: 8px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+  font-size: 85%;
+  line-height: 1.45;
+  overflow: auto;
+  position: relative; /* For positioning of dots and copy icon */
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  color: #d4d4d4; /* Light text color for contrast */
+}
+
+/* macOS-style colored dots */
+.prose pre::after {
+  content: "";
+  position: absolute;
+  top: 16px; /* Adjusted to match padding */
+  left: 16px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: #ff5f56; /* Red dot */
+  box-shadow: 
+    20px 0 0 #ffbd2e, /* Yellow dot */
+    40px 0 0 #27c93f; /* Green dot */
+  z-index: 1;
+}
+
+/* Copy button for code blocks */
+.prose pre .copy-button {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: #d4d4d4;
+  border: none;
+  cursor: pointer;
+  opacity: 0; /* Hidden by default */
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0;
+}
+
+/* Make button visible on hover */
+.prose pre:hover .copy-button {
+  opacity: 1;
+}
+
+.copy-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Copy icon */
+.prose pre .copy-button::before {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4d4d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2' ry='2'%3E%3C/rect%3E%3Cpath d='M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1'%3E%3C/path%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.prose pre .copy-button.copied::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4d4d4' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'%3E%3C/path%3E%3C/svg%3E");
+}
+
+/* Dark theme styles */
+.dark .prose pre {
+  background-color: #1c1c1c; /* Slightly different black for dark theme */
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark .copy-button {
+  color: #9e9e9e;
+}
+
+.dark .copy-button::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239e9e9e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='9' y='9' width='13' height='13' rx='2' ry='2'%3E%3C/rect%3E%3Cpath d='M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.dark .copy-button.copied::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%239e9e9e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6L9 17l-5-5'%3E%3C/path%3E%3C/svg%3E");
+}
+
+.dark .copy-button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.prose code {
+  padding: 0.2em 0.4em;
+  margin: 0;
+  font-size: 85%;
+  background-color: rgba(175, 184, 193, 0.2);
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, Liberation Mono, monospace;
+}
+
+.dark .prose code {
+  background-color: rgba(110, 118, 129, 0.4);
+}
+
+.prose pre code {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background-color: transparent;
+}
+
+/* GitHub-style tables */
+.prose table {
+  border-spacing: 0;
+  border-collapse: collapse;
+  margin: 16px 0;
+  width: 100%;
+  overflow: auto;
+}
+
+.prose table th {
+  font-weight: 600;
+  padding: 6px 13px;
+  border: 1px solid #d0d7de;
+  background-color: #f6f8fa;
+}
+
+.dark .prose table th {
+  border-color: #30363d;
+  background-color: #161b22;
+}
+
+.prose table td {
+  padding: 6px 13px;
+  border: 1px solid #d0d7de;
+}
+
+.dark .prose table td {
+  border-color: #30363d;
+}
+
+.prose table tr {
+  background-color: #ffffff;
+  border-top: 1px solid #d0d7de;
+}
+
+.dark .prose table tr {
+  background-color: #0d1117;
+  border-top-color: #30363d;
+}
+
+.prose table tr:nth-child(2n) {
+  background-color: #f6f8fa;
+}
+
+.dark .prose table tr:nth-child(2n) {
+  background-color: #161b22;
+}
+
+/* GitHub-style blockquotes */
+.prose blockquote {
+  padding: 0 1em;
+  color: #57606a;
+  border-left: 0.25em solid #d0d7de;
+  margin: 16px 0;
+}
+
+.dark .prose blockquote {
+  color: #8b949e;
+  border-left-color: #30363d;
+}
+
+/* Line breaks in markdown */
+.prose p {
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+/* Lists styling */
+.prose ul, .prose ol {
+  padding-left: 2em;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.prose li+li {
+  margin-top: 0.25em;
+}
+
+/* Fix for bullet points */
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ul ul {
+  list-style-type: circle;
+}
+
+.prose ul ul ul {
+  list-style-type: square;
+}
+
+/* Enhanced heading styles */
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 {
+  margin-top: 24px;
+  margin-bottom: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.prose h1 {
+  font-size: 2em;
+}
+
+.dark .prose h1 {
+}
+
+.prose h2 {
+  font-size: 1.5em;
+}
+
+.dark .prose h2 {
+}
+
+.prose h3 {
+  font-size: 1.25em;
+}
+
+.prose h4 {
+  font-size: 1em;
+}
+
+.prose h5 {
+  font-size: 0.875em;
+}
+
+.prose h6 {
+  font-size: 0.85em;
+  color: #57606a;
+}
+
+.dark .prose h6 {
+  color: #8b949e;
+}
+
+/* Links styling */
+.prose a {
+  color: #0969da;
+  text-decoration: none;
+}
+
+.prose a:hover {
+  text-decoration: underline;
+}
+
+.dark .prose a {
+  color: #2f81f7;
+}
+
+/* Footnotes */
+.prose .footnotes {
+  border-top: 1px solid #d0d7de;
+  margin-top: 32px;
+  padding-top: 16px;
+}
+
+.dark .prose .footnotes {
+  border-top-color: #30363d;
+}
+
+.prose .footnotes ol {
+  font-size: 0.875em;
+}
+
+.prose .footnote-ref {
+  vertical-align: super;
+  font-size: smaller;
+}
+
+.prose .footnote-backref {
+  display: inline-block;
+  transform: scaleX(-1);
+}
+
+/* Prism.js syntax highlighting (VSCode Dark+ theme) */
+.prose pre {
+  background-color: #1e1e1e;
+  color: #d4d4d4;
+  padding: 1rem;
+  padding-top: 2rem;
+  padding-left: 70px;
+  border-radius: 8px;
+  position: relative;
+  margin: 1.5rem 0;
+  tab-size: 4;
+}
+
+/* Fix for dark theme highlighting issue */
+.prose pre code {
+  background-color: transparent !important;
+  border: none;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+/* Token colors */
+.prose .token.comment,
+.prose .token.prolog,
+.prose .token.doctype,
+.prose .token.cdata {
+  color: #6a9955;
+  text-shadow: none;
+}
+
+.prose .token.punctuation {
+  color: #d4d4d4;
+  text-shadow: none;
+}
+
+.prose .namespace {
+  opacity: 0.7;
+}
+
+.prose .token.property,
+.prose .token.tag,
+.prose .token.boolean,
+.prose .token.number,
+.prose .token.constant,
+.prose .token.symbol,
+.prose .token.deleted {
+  color: #b5cea8;
+  text-shadow: none;
+}
+
+.prose .token.selector,
+.prose .token.attr-name,
+.prose .token.string,
+.prose .token.char,
+.prose .token.builtin,
+.prose .token.inserted {
+  color: #ce9178;
+  text-shadow: none;
+}
+
+.prose .token.operator,
+.prose .token.entity,
+.prose .token.url,
+.prose .language-css .token.string,
+.prose .style .token.string {
+  color: #d4d4d4;
+  text-shadow: none;
+}
+
+.prose .token.atrule,
+.prose .token.attr-value,
+.prose .token.keyword {
+  color: #569cd6;
+  text-shadow: none;
+}
+
+.prose .token.function,
+.prose .token.class-name {
+  color: #dcdcaa;
+  text-shadow: none;
+}
+
+.prose .token.regex,
+.prose .token.important,
+.prose .token.variable {
+  color: #9cdcfe;
+  text-shadow: none;
+}
+
+.prose .token.important,
+.prose .token.bold {
+  font-weight: bold;
+}
+
+.prose .token.italic {
+  font-style: italic;
+}
+
+.prose .token.entity {
+  cursor: help;
+}
+
+/* Syntax highlighting colors */
+.syntax-highlighted .keyword {
+  color: #569cd6; /* blue */
+}
+
+.syntax-highlighted .function {
+  color: #dcdcaa; /* yellow */
+}
+
+.syntax-highlighted .string {
+  color: #ce9178; /* orange/red */
+}
+
+.syntax-highlighted .comment {
+  color: #6a9955; /* green */
+}
+
+.syntax-highlighted .number {
+  color: #b5cea8; /* light green */
+}
+
+.syntax-highlighted .operator,
+.syntax-highlighted .punctuation {
+  color: #d4d4d4; /* white */
+}
+
+.syntax-highlighted .class {
+  color: #4ec9b0; /* teal */
+}
+
+.syntax-highlighted .variable {
+  color: #9cdcfe; /* light blue */
+}
+
+.syntax-highlighted .tag {
+  color: #569cd6; /* blue */
+}
+
+.syntax-highlighted .attr {
+  color: #9cdcfe; /* light blue */
+}
+
+.syntax-highlighted .property {
+  color: #9cdcfe; /* light blue */
+}
