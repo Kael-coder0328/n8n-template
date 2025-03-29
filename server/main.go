@@ -26,9 +26,13 @@ import (
 // 5. Configures CORS settings for cross-origin requests
 // 6. Starts the HTTP server on the specified port
 func main() {
-	// Load environment variables
-	if err := godotenv.Load(); err != nil {
-		log.Fatal("Error loading .env file")
+	// Load environment variables from .env file only in development
+	if os.Getenv("ENV") != "production" {
+		if err := godotenv.Load(); err != nil {
+			log.Printf("Warning: .env file not found, using system environment variables")
+		} else {
+			log.Println("Loaded environment variables from .env file")
+		}
 	}
 
 	// Create database connection string
