@@ -54,23 +54,23 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
   }
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pt-16 pb-24">
+    <div className="min-h-screen bg-background pt-16 pb-24">
       <div className="container mx-auto px-4">
         <Link 
           href="/blog"
-          className="inline-flex items-center text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 mb-8 group"
+          className="inline-flex items-center text-primary-400 hover:text-primary-500 mb-8 group"
         >
           <ArrowLeft className="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" />
           Back to all articles
         </Link>
         
-        <article className="bg-white dark:bg-gray-900 shadow-lg rounded-lg p-8 md:p-12 max-w-4xl mx-auto">
+        <article className="bg-background border border-accent shadow-lg rounded-lg p-8 md:p-12 max-w-4xl mx-auto">
           <header className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-black dark:text-white mb-4">
+            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
               {post.title}
             </h1>
             
-            <div className="flex flex-wrap items-center text-sm text-gray-500 dark:text-gray-400 mb-6">
+            <div className="flex flex-wrap items-center text-sm text-foreground mb-6">
               {post.date && (
                 <time className="mr-6" dateTime={post.date}>
                   {new Date(post.date).toLocaleDateString('en-US', {
@@ -93,7 +93,7 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
               {post.tags?.map((tag: string) => (
                 <span 
                   key={tag}
-                  className="px-3 py-1 text-sm rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200"
+                  className="px-3 py-1 text-sm rounded-full bg-accent text-primary-400"
                 >
                   {tag}
                 </span>
