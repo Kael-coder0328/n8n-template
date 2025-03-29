@@ -31,7 +31,7 @@ services:
     environment:
       # Server Configuration
       - PORT=8080
-      - ENV=${ENV:-development}
+      - ENV=${ENV:-docker}
       # Database Configuration
       - DB_HOST=postgres
       - DB_PORT=${DB_PORT:-5432}
