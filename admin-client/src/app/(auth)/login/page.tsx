@@ -1,15 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { adminLogin, setAuthToken } from '@/lib/services/auth';
-import { APP_NAME } from '@/lib/config';
+import { APP_NAME, getApiUrl } from '@/lib/config';
 import Cookies from 'js-cookie';
 
 export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState<string>('');
   const [loading, setLoading] = useState(false);
+  const [apiUrl, setApiUrl] = useState<string>('');
+
+  useEffect(() => {
+    // Get the current API URL on component mount
+    setApiUrl(getApiUrl());
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -47,6 +53,20 @@ export default function LoginPage() {
           <p className="mt-2 text-center text-sm text-gray-600">
             Sign in to access the admin dashboard
           </p>
+          {apiUrl && (
+            <div className="mt-2 text-center">
+              <p className="text-xs text-gray-500">Connected to:</p>
+              <p className="text-sm font-mono bg-gray-100 rounded-md py-1 px-3 inline-block mt-1 text-gray-700 break-all">
+                {apiUrl}
+              </p>
+              <button 
+                onClick={() => router.push('/api-url')}
+                className="mt-1 text-xs text-indigo-600 hover:text-indigo-800 underline"
+              >
+                Change server
+              </button>
+            </div>
+          )}
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="rounded-md shadow-sm -space-y-px">
