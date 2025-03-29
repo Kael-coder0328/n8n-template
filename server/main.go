@@ -115,6 +115,12 @@ func main() {
 	mux.HandleFunc("/admin/login", adminHandler.Login)
 	mux.Handle("/admin/users", adminMiddleware.RequireAdmin(http.HandlerFunc(adminHandler.GetUsers)))
 
+	// Admin health check endpoint (for connection testing)
+	mux.HandleFunc("/admin/health", func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Content-Type", "application/json")
+		w.Write([]byte(`{"status":"ok"}`))
+	})
+
 	// Add the new admin email route
 	emailHandler := &handlers.Handler{DB: db}
 	mux.Handle("/admin/send-email", adminMiddleware.RequireAdmin(http.HandlerFunc(emailHandler.AdminSendEmailHandler)))
