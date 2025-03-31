@@ -9,18 +9,23 @@ interface PostImageProps {
   alt: string;
 }
 
-export function PostImage({ src, alt }: PostImageProps) {
+/**
+ * Client component for displaying post images with error handling
+ */
+const PostImage = ({ src, alt }: PostImageProps) => {
   return (
     <div className="w-full h-64 md:h-96 overflow-hidden relative bg-accent/20">
-      <img
+      <Image
         src={src}
         alt={alt}
-        className="w-full h-full object-cover"
-        onError={(e) => handleImageError(e)}
+        fill
+        className="object-cover"
+        sizes="(max-width: 768px) 100vw, 1200px"
+        onError={handleImageError}
       />
     </div>
   );
-}
+};
 
-// Add default export
-export default { PostImage }; 
+export { PostImage };
+export default PostImage; 
