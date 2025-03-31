@@ -15,6 +15,7 @@ export interface BlogPost {
     date?: string;
     readTime?: number;
     tags?: string[];
+    imagePath?: string;
 }
 
 /**
@@ -49,6 +50,15 @@ const BlogList: React.FC<BlogListProps> = ({ posts, className = '' }) => {
                             className="group relative flex flex-col p-6 bg-background border border-accent shadow-lg rounded-lg hover:shadow-xl transition-all duration-200"
                         >
                             <article className="flex flex-col flex-1">
+                                {post.imagePath && (
+                                    <div className="mb-4 overflow-hidden rounded-lg h-40 w-full">
+                                        <img 
+                                            src={post.imagePath} 
+                                            alt={post.title}
+                                            className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-200"
+                                        />
+                                    </div>
+                                )}
                                 <div className="flex justify-between items-start mb-4">
                                     <h3 className="text-xl font-bold text-primary-400 group-hover:text-primary-500 transition-colors">
                                         {post.title}
