@@ -1,13 +1,14 @@
 'use client'
 
 import React from 'react';
-import BlogList, { BlogPost } from './BlogList';
+import BlogList from './BlogList';
+import { Post } from '@/types/blog';
 
 /**
  * Props for the BlogPageClient component
  */
 interface BlogPageClientProps {
-  posts: BlogPost[];
+  posts: Post[];
 }
 
 /**
