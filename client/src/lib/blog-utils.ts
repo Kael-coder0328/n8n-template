@@ -11,7 +11,7 @@ import rehypeRaw from 'rehype-raw';
 import rehypeSanitize from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
-import { BlogPost } from '@/app/blog/BlogList';
+import { Post } from '@/types/blog';
 import 'server-only';
 
 const postsDirectory = path.join(process.cwd(), 'public/blog/posts');
@@ -99,7 +99,7 @@ This file contains metadata for all blog posts.
 /**
  * Get all blog posts metadata from the metadata file or markdown files as fallback
  */
-export function getAllPosts(): BlogPost[] {
+export function getAllPosts(): Post[] {
   // Try to get posts from metadata file first
   const metadataPosts = parseBlogMetadata();
   
@@ -127,8 +127,8 @@ export function getAllPosts(): BlogPost[] {
             readTime = Math.ceil(wordCount / 200);
           }
         }
-      } catch (error) {
-        console.warn(`Could not read markdown file for ${meta.title}:`, error);
+      } catch {
+        console.error('Error occurred');
       }
       
       // Safely create date - handle invalid date strings 
@@ -140,7 +140,7 @@ export function getAllPosts(): BlogPost[] {
           if (!isNaN(date.getTime())) {
             isoDate = date.toISOString();
           }
-        } catch (e) {
+        } catch {
           console.warn(`Invalid date format for ${meta.title}: ${meta.date}`);
         }
       }
@@ -273,7 +273,7 @@ export async function getPostBySlug(slug: string) {
     
     if (metaPost) {
       // Get content from the markdown file specified in metadata
-      let content, data;
+      let content;
       
       if (metaPost.markdownFilePath) {
         const mdPath = metaPost.markdownFilePath.startsWith('/') 
@@ -284,16 +284,13 @@ export async function getPostBySlug(slug: string) {
           const fileContents = fs.readFileSync(mdPath, 'utf8');
           const parsed = matter(fileContents);
           content = parsed.content;
-          data = parsed.data;
         } else {
           // Fallback content if the markdown file doesn't exist
           content = `# ${metaPost.title}\n\n${metaPost.description || 'No content available for this blog post yet.'}`;
-          data = {};
         }
       } else {
         // Fallback content if no markdown file path is specified
         content = `# ${metaPost.title}\n\n${metaPost.description || 'No content available for this blog post yet.'}`;
-        data = {};
       }
       
       // Fix relative image paths
@@ -327,7 +324,7 @@ export async function getPostBySlug(slug: string) {
           if (!isNaN(date.getTime())) {
             isoDate = date.toISOString();
           }
-        } catch (e) {
+        } catch {
           console.warn(`Invalid date format for ${metaPost.title}: ${metaPost.date}`);
         }
       }
