@@ -2,33 +2,36 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { notFound } from 'next/navigation';
-import { getPostBySlug, getAllPostSlugs, optimizeImageSize } from '@/lib/blog-utils';
+import { getAllPostSlugs } from '@/lib/blog-utils';
+import { fetchBlogPostBySlug } from '../actions';
+import { DEFAULT_BLOG_IMAGE, formatDate, handleImageError } from '@/lib/image-utils';
 import MarkdownContent from '@/components/MarkdownContent';
+import Image from 'next/image';
+import { Metadata } from 'next';
 
 /**
  * Generate metadata for the blog post page
  */
-export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const post = await getPostBySlug(slug);
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const slug = params.slug;
+  const post = await fetchBlogPostBySlug(slug);
   
   if (!post) {
     return {
-      title: 'Blog Post Not Found',
+      title: 'Post Not Found',
       description: 'The requested blog post could not be found.'
     };
   }
-  
+
   return {
-    title: `${post.title} | Blog`,
-    description: post.description || post.content?.substring(0, 160).replace(/<[^>]*>/g, ''),
+    title: post.title,
+    description: post.description,
     openGraph: {
       title: post.title,
-      description: post.description || post.content?.substring(0, 160).replace(/<[^>]*>/g, ''),
+      description: post.description,
       type: 'article',
       publishedTime: post.date,
-      tags: post.tags,
-      images: post.imagePath ? [{ url: post.imagePath }] : undefined,
+      authors: ['n8n Team'],
     },
   };
 }
@@ -46,88 +49,45 @@ export function generateStaticParams() {
 /**
  * Blog post page component
  */
-export default async function BlogPostPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const post = await getPostBySlug(slug);
+export default async function BlogPostPage({ params }: { params: { slug: string } }) {
+  const slug = params.slug;
+  const post = await fetchBlogPostBySlug(slug);
   
   if (!post) {
     notFound();
   }
-  
-  // Optimize image if present
-  const optimizedImage = post.imagePath ? optimizeImageSize(post.imagePath, 1200, 800) : null;
-  
+
   return (
-    <div className="min-h-screen bg-background pt-16 pb-24">
-      <div className="container mx-auto px-4">
-        <Link 
-          href="/blog"
-          className="inline-flex items-center text-primary-400 hover:text-primary-500 mb-8 group"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition-transform" />
-          Back to all articles
-        </Link>
-        
-        <article className="bg-background border border-accent shadow-lg rounded-lg overflow-hidden max-w-4xl mx-auto">
-          {optimizedImage && (
-            <div className="w-full h-64 md:h-96 overflow-hidden relative">
-              <img 
-                src={optimizedImage} 
-                alt={post.title}
-                className="w-full h-full object-cover"
-              />
+    <main className="flex-grow container mx-auto px-4 py-8">
+      <article className="bg-background border border-accent shadow-lg rounded-lg overflow-hidden max-w-4xl mx-auto">
+        <div className="w-full h-64 md:h-96 overflow-hidden relative bg-accent/20">
+          <img
+            src={post.imagePath || DEFAULT_BLOG_IMAGE}
+            alt={post.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="p-6 md:p-8">
+          <h1 className="text-2xl md:text-4xl font-bold mb-2">{post.title}</h1>
+          <div className="flex items-center text-sm text-gray-500 mb-6">
+            <span>{formatDate(post.date)}</span>
+            <span className="mx-2">•</span>
+            <span>{post.readTime} min read</span>
+          </div>
+          {post.tags && post.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-6">
+              {post.tags.map((tag: string) => (
+                <span key={tag} className="px-3 py-1 bg-accent/10 text-accent-foreground rounded-full text-sm">
+                  {tag}
+                </span>
+              ))}
             </div>
           )}
-          
-          <div className="p-8 md:p-12">
-            <header className="mb-8">
-              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-                {post.title}
-              </h1>
-              
-              {post.description && (
-                <p className="text-xl text-foreground/80 mb-6">
-                  {post.description}
-                </p>
-              )}
-              
-              <div className="flex flex-wrap items-center text-sm text-foreground mb-6">
-                {post.date && (
-                  <time className="mr-6" dateTime={post.date}>
-                    {new Date(post.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric'
-                    })}
-                  </time>
-                )}
-                
-                {post.readTime && (
-                  <span className="flex items-center">
-                    <span className="mr-1">📚</span>
-                    {post.readTime} min read
-                  </span>
-                )}
-              </div>
-              
-              <div className="flex flex-wrap gap-2">
-                {post.tags?.map((tag: string) => (
-                  <span 
-                    key={tag}
-                    className="px-3 py-1 text-sm rounded-full bg-accent text-primary-400"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </header>
-            
-            <div className="border-t border-accent pt-8">
-              <MarkdownContent content={post.content} />
-            </div>
+          <div className="prose dark:prose-invert max-w-none">
+            <MarkdownContent content={post.content} />
           </div>
-        </article>
-      </div>
-    </div>
+        </div>
+      </article>
+    </main>
   );
 } 
