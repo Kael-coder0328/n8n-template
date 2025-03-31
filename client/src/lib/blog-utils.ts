@@ -12,6 +12,7 @@ import rehypeSanitize from 'rehype-sanitize';
 import rehypeSlug from 'rehype-slug';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
 import { BlogPost } from '@/app/blog/BlogList';
+import 'server-only';
 
 const postsDirectory = path.join(process.cwd(), 'public/blog/posts');
 const metadataFilePath = path.join(process.cwd(), 'public/blog/metadata.md');
@@ -63,24 +64,30 @@ This file contains metadata for all blog posts.
       id: `post-${index + 1}`,
       title: title,
       slug: title.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-'),
+      markdownFilePath: '', // Default empty string to prevent undefined errors
+      imagePath: '', // Default empty string
     };
 
     // Parse the metadata entries
     lines.slice(1).forEach(line => {
-      if (line.includes('- Sl No-')) {
-        metadata.id = `post-${line.split('-')[1].trim()}`;
-      } else if (line.includes('- Title-')) {
-        metadata.title = line.split('-')[1].trim();
-      } else if (line.includes('- Description-')) {
-        metadata.description = line.split('-')[1].trim();
-      } else if (line.includes('- Image_path-')) {
-        metadata.imagePath = line.split('-')[1].trim();
-      } else if (line.includes('- Markdownfile_Path-')) {
-        metadata.markdownFilePath = line.split('-')[1].trim();
-      } else if (line.includes('- Date-')) {
-        metadata.date = line.split('-')[1].trim();
-      } else if (line.includes('- Tags-')) {
-        const tagsString = line.split('-')[1].trim();
+      const trimmedLine = line.trim();
+      if (trimmedLine.startsWith('- Sl No-')) {
+        const slNo = trimmedLine.split('- Sl No-')[1].trim();
+        metadata.id = `post-${slNo}`;
+      } else if (trimmedLine.startsWith('- Title-')) {
+        metadata.title = trimmedLine.split('- Title-')[1].trim();
+        // Update slug based on title for consistency
+        metadata.slug = metadata.title.toLowerCase().replace(/[^\w\s]/g, '').replace(/\s+/g, '-');
+      } else if (trimmedLine.startsWith('- Description-')) {
+        metadata.description = trimmedLine.split('- Description-')[1].trim();
+      } else if (trimmedLine.startsWith('- Image_path-')) {
+        metadata.imagePath = trimmedLine.split('- Image_path-')[1].trim();
+      } else if (trimmedLine.startsWith('- Markdownfile_Path-')) {
+        metadata.markdownFilePath = trimmedLine.split('- Markdownfile_Path-')[1].trim();
+      } else if (trimmedLine.startsWith('- Date-')) {
+        metadata.date = trimmedLine.split('- Date-')[1].trim();
+      } else if (trimmedLine.startsWith('- Tags-')) {
+        const tagsString = trimmedLine.split('- Tags-')[1].trim();
         metadata.tags = tagsString.split(',').map(tag => tag.trim());
       }
     });
@@ -104,31 +111,47 @@ export function getAllPosts(): BlogPost[] {
       let readTime = 0;
       
       try {
-        // Try to read the actual markdown file
-        const mdPath = meta.markdownFilePath.startsWith('/') 
-          ? path.join(process.cwd(), 'public', meta.markdownFilePath) 
-          : path.join(process.cwd(), 'public', meta.markdownFilePath);
-        
-        if (fs.existsSync(mdPath)) {
-          const mdContent = fs.readFileSync(mdPath, 'utf8');
-          const parsedMd = matter(mdContent);
-          content = parsedMd.content;
+        // Try to read the actual markdown file if a path is specified
+        if (meta.markdownFilePath) {
+          const mdPath = meta.markdownFilePath.startsWith('/') 
+            ? path.join(process.cwd(), 'public', meta.markdownFilePath) 
+            : path.join(process.cwd(), 'public', meta.markdownFilePath);
           
-          // Calculate read time
-          const wordCount = content.split(/\s+/).length;
-          readTime = Math.ceil(wordCount / 200);
+          if (fs.existsSync(mdPath)) {
+            const mdContent = fs.readFileSync(mdPath, 'utf8');
+            const parsedMd = matter(mdContent);
+            content = parsedMd.content;
+            
+            // Calculate read time
+            const wordCount = content.split(/\s+/).length;
+            readTime = Math.ceil(wordCount / 200);
+          }
         }
       } catch (error) {
         console.warn(`Could not read markdown file for ${meta.title}:`, error);
+      }
+      
+      // Safely create date - handle invalid date strings 
+      let isoDate: string | undefined = undefined;
+      if (meta.date) {
+        try {
+          const date = new Date(meta.date);
+          // Check if date is valid
+          if (!isNaN(date.getTime())) {
+            isoDate = date.toISOString();
+          }
+        } catch (e) {
+          console.warn(`Invalid date format for ${meta.title}: ${meta.date}`);
+        }
       }
       
       return {
         id: meta.id,
         slug: meta.slug,
         title: meta.title,
-        description: meta.description,
-        imagePath: meta.imagePath,
-        date: meta.date ? new Date(meta.date).toISOString() : undefined,
+        description: meta.description || '',
+        imagePath: meta.imagePath || '',
+        date: isoDate,
         readTime,
         tags: meta.tags || [],
       };
@@ -250,19 +273,25 @@ export async function getPostBySlug(slug: string) {
     
     if (metaPost) {
       // Get content from the markdown file specified in metadata
-      const mdPath = metaPost.markdownFilePath.startsWith('/') 
-        ? path.join(process.cwd(), 'public', metaPost.markdownFilePath) 
-        : path.join(process.cwd(), 'public', metaPost.markdownFilePath);
-      
       let content, data;
       
-      if (fs.existsSync(mdPath)) {
-        const fileContents = fs.readFileSync(mdPath, 'utf8');
-        const parsed = matter(fileContents);
-        content = parsed.content;
-        data = parsed.data;
+      if (metaPost.markdownFilePath) {
+        const mdPath = metaPost.markdownFilePath.startsWith('/') 
+          ? path.join(process.cwd(), 'public', metaPost.markdownFilePath) 
+          : path.join(process.cwd(), 'public', metaPost.markdownFilePath);
+        
+        if (fs.existsSync(mdPath)) {
+          const fileContents = fs.readFileSync(mdPath, 'utf8');
+          const parsed = matter(fileContents);
+          content = parsed.content;
+          data = parsed.data;
+        } else {
+          // Fallback content if the markdown file doesn't exist
+          content = `# ${metaPost.title}\n\n${metaPost.description || 'No content available for this blog post yet.'}`;
+          data = {};
+        }
       } else {
-        // Fallback content if the markdown file doesn't exist
+        // Fallback content if no markdown file path is specified
         content = `# ${metaPost.title}\n\n${metaPost.description || 'No content available for this blog post yet.'}`;
         data = {};
       }
@@ -289,13 +318,27 @@ export async function getPostBySlug(slug: string) {
       const wordCount = content.split(/\s+/).length;
       const readTime = Math.ceil(wordCount / 200);
       
+      // Safely create date - handle invalid date strings
+      let isoDate: string | undefined = undefined;
+      if (metaPost.date) {
+        try {
+          const date = new Date(metaPost.date);
+          // Check if date is valid
+          if (!isNaN(date.getTime())) {
+            isoDate = date.toISOString();
+          }
+        } catch (e) {
+          console.warn(`Invalid date format for ${metaPost.title}: ${metaPost.date}`);
+        }
+      }
+      
       return {
         id: metaPost.id,
         slug,
         title: metaPost.title,
-        description: metaPost.description,
-        imagePath: metaPost.imagePath,
-        date: metaPost.date ? new Date(metaPost.date).toISOString() : undefined,
+        description: metaPost.description || '',
+        imagePath: metaPost.imagePath || '',
+        date: isoDate,
         readTime,
         tags: metaPost.tags || [],
         content: contentHtml
