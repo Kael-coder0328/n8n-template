@@ -6,22 +6,19 @@ import Image from 'next/image';
 import { DEFAULT_BLOG_IMAGE, formatDate } from '@/lib/image-utils';
 import MarkdownContent from '@/components/MarkdownContent';
 
-// Define route parameters type
-type BlogParams = {
-  params: {
-    slug: string;
-  };
-};
+// Define a proper interface for the page props
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
 
 // Generate static parameters for blog posts
 export async function generateStaticParams() {
   const slugs = await getAllPostSlugs();
-  // Ensure that slugs are awaited before using their properties
   return slugs.map(slug => ({ slug: slug.slug }));
 }
 
 // Generate metadata for the blog post
-export async function generateMetadata({ params }: BlogParams): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   // Await params before accessing its properties
   const resolvedParams = await params;
   const post = await fetchBlogPostBySlug(resolvedParams.slug);
@@ -46,8 +43,11 @@ export async function generateMetadata({ params }: BlogParams): Promise<Metadata
   };
 }
 
-// BlogPost component to render the blog post
-export default async function BlogPost({ params }: BlogParams) {
+/**
+ * BlogPost component to render the blog post based on the provided slug.
+ * It fetches the post data and displays it along with structured data for SEO.
+ */
+export default async function BlogPost({ params }: PageProps) {
   // Await params before accessing its properties
   const resolvedParams = await params;
   const post = await fetchBlogPostBySlug(resolvedParams.slug);
