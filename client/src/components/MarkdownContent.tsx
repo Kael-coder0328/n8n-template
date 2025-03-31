@@ -10,12 +10,16 @@ import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
+import { processContentImages, handleImageError, DEFAULT_BLOG_IMAGE } from '@/lib/image-utils';
 
 /**
  * Custom MarkdownContent component with syntax highlighting and code copy buttons
  */
 const MarkdownContent = ({ content }: { content: string }) => {
   const contentRef = useRef<HTMLDivElement>(null);
+
+  // Process content to fix image paths
+  const processedContent = processContentImages(content);
 
   // Add copy buttons to code blocks and apply syntax highlighting after content is rendered
   useEffect(() => {
@@ -72,7 +76,18 @@ const MarkdownContent = ({ content }: { content: string }) => {
     
     // Process emojis
     processEmojis(contentRef.current);
-  }, [content]);
+
+    // Add error handling to all images
+    const imageElements = contentRef.current.querySelectorAll('img');
+    imageElements.forEach(img => {
+      img.addEventListener('error', (e) => {
+        const target = e.currentTarget as HTMLImageElement;
+        if (target.src !== DEFAULT_BLOG_IMAGE) {
+          target.src = DEFAULT_BLOG_IMAGE;
+        }
+      });
+    });
+  }, [processedContent]);
   
   /**
    * Process emoji shortcodes
@@ -127,11 +142,11 @@ const MarkdownContent = ({ content }: { content: string }) => {
                  prose-hr:my-8 prose-hr:border-gray-200 dark:prose-hr:border-gray-800
                  prose-code:bg-gray-100 dark:prose-code:bg-gray-800 prose-code:rounded prose-code:px-1 prose-code:py-0.5 prose-code:text-sm prose-code:font-mono
                  prose-pre:bg-gray-100 dark:prose-pre:bg-gray-800 prose-pre:text-sm prose-pre:font-mono prose-pre:rounded prose-pre:overflow-x-auto
-                 prose-img:rounded-md prose-img:mx-auto
+                 prose-img:rounded-md prose-img:mx-auto prose-img:max-w-full prose-img:max-h-[500px]
                  prose-table:border-collapse prose-table:my-6
                  prose-th:border prose-th:border-gray-300 dark:prose-th:border-gray-700 prose-th:bg-gray-100 dark:prose-th:bg-gray-800 prose-th:p-2
                  prose-td:border prose-td:border-gray-300 dark:prose-td:border-gray-700 prose-td:p-2"
-      dangerouslySetInnerHTML={{ __html: content }}
+      dangerouslySetInnerHTML={{ __html: processedContent }}
     />
   );
 };
