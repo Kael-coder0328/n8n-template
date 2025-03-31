@@ -10,26 +10,30 @@ import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-bash';
 import 'prismjs/components/prism-json';
-import { processContentImages, handleImageError, DEFAULT_BLOG_IMAGE } from '@/lib/image-utils';
+import { processContentImages, DEFAULT_BLOG_IMAGE } from '@/lib/image-utils';
+
+interface MarkdownContentProps {
+  content: string;
+}
 
 /**
  * Custom MarkdownContent component with syntax highlighting and code copy buttons
  */
-const MarkdownContent = ({ content }: { content: string }) => {
-  const contentRef = useRef<HTMLDivElement>(null);
+export default function MarkdownContent({ content }: MarkdownContentProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Process content to fix image paths
   const processedContent = processContentImages(content);
 
   // Add copy buttons to code blocks and apply syntax highlighting after content is rendered
   useEffect(() => {
-    if (!contentRef.current) return;
+    if (!containerRef.current) return;
     
     // Apply Prism.js syntax highlighting
-    Prism.highlightAllUnder(contentRef.current);
+    Prism.highlightAllUnder(containerRef.current);
     
     // Find all pre elements (code blocks)
-    const preElements = contentRef.current.querySelectorAll('pre');
+    const preElements = containerRef.current.querySelectorAll('pre');
     
     preElements.forEach((preElement) => {
       // Only add copy button if it doesn't already exist
@@ -75,15 +79,14 @@ const MarkdownContent = ({ content }: { content: string }) => {
     });
     
     // Process emojis
-    processEmojis(contentRef.current);
+    processEmojis(containerRef.current);
 
     // Add error handling to all images
-    const imageElements = contentRef.current.querySelectorAll('img');
+    const imageElements = containerRef.current.querySelectorAll('img');
     imageElements.forEach(img => {
-      img.addEventListener('error', (e) => {
-        const target = e.currentTarget as HTMLImageElement;
-        if (target.src !== DEFAULT_BLOG_IMAGE) {
-          target.src = DEFAULT_BLOG_IMAGE;
+      img.addEventListener('error', () => {
+        if (img.src !== DEFAULT_BLOG_IMAGE) {
+          img.src = DEFAULT_BLOG_IMAGE;
         }
       });
     });
@@ -130,7 +133,7 @@ const MarkdownContent = ({ content }: { content: string }) => {
 
   return (
     <div 
-      ref={contentRef}
+      ref={containerRef}
       className="prose prose-blue dark:prose-invert prose-lg max-w-none
                  prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white
                  prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-h4:text-lg
@@ -149,6 +152,4 @@ const MarkdownContent = ({ content }: { content: string }) => {
       dangerouslySetInnerHTML={{ __html: processedContent }}
     />
   );
-};
-
-export default MarkdownContent; 
+} 
