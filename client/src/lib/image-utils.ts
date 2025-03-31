@@ -45,15 +45,12 @@ export function optimizeImageSize(imagePath: string, maxWidth = 800, maxHeight =
 }
 
 /**
- * Handle image error by replacing with a default image
- * 
- * @param event The error event from the image
- * @returns void
+ * Handle image loading errors by replacing with default image
  */
-export function handleImageError(event: React.SyntheticEvent<HTMLImageElement>): void {
-  const target = event.currentTarget;
-  if (target.src !== DEFAULT_BLOG_IMAGE) {
-    target.src = DEFAULT_BLOG_IMAGE;
+export function handleImageError(e: React.SyntheticEvent<HTMLImageElement>) {
+  const img = e.currentTarget;
+  if (img.src !== DEFAULT_BLOG_IMAGE) {
+    img.src = DEFAULT_BLOG_IMAGE;
   }
 }
 
@@ -96,7 +93,7 @@ export function formatDate(dateString?: string, options?: Intl.DateTimeFormatOpt
       day: 'numeric' 
     };
     return new Date(dateString).toLocaleDateString('en-US', defaultOptions);
-  } catch (e) {
+  } catch  {
     console.warn(`Invalid date format: ${dateString}`);
     return '';
   }
