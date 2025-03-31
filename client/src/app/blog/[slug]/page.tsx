@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { notFound } from 'next/navigation';
-import { getPostBySlug, getAllPostSlugs } from '@/lib/blog-utils';
+import { getPostBySlug, getAllPostSlugs, optimizeImageSize } from '@/lib/blog-utils';
 import MarkdownContent from '@/components/MarkdownContent';
 
 /**
@@ -28,6 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       type: 'article',
       publishedTime: post.date,
       tags: post.tags,
+      images: post.imagePath ? [{ url: post.imagePath }] : undefined,
     },
   };
 }
@@ -53,6 +54,9 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
     notFound();
   }
   
+  // Optimize image if present
+  const optimizedImage = post.imagePath ? optimizeImageSize(post.imagePath, 1200, 800) : null;
+  
   return (
     <div className="min-h-screen bg-background pt-16 pb-24">
       <div className="container mx-auto px-4">
@@ -64,44 +68,64 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
           Back to all articles
         </Link>
         
-        <article className="bg-background border border-accent shadow-lg rounded-lg p-8 md:p-12 max-w-4xl mx-auto">
-          <header className="mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              {post.title}
-            </h1>
-            
-            <div className="flex flex-wrap items-center text-sm text-foreground mb-6">
-              {post.date && (
-                <time className="mr-6" dateTime={post.date}>
-                  {new Date(post.date).toLocaleDateString('en-US', {
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                  })}
-                </time>
+        <article className="bg-background border border-accent shadow-lg rounded-lg overflow-hidden max-w-4xl mx-auto">
+          {optimizedImage && (
+            <div className="w-full h-64 md:h-96 overflow-hidden relative">
+              <img 
+                src={optimizedImage} 
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+          
+          <div className="p-8 md:p-12">
+            <header className="mb-8">
+              <h1 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                {post.title}
+              </h1>
+              
+              {post.description && (
+                <p className="text-xl text-foreground/80 mb-6">
+                  {post.description}
+                </p>
               )}
               
-              {post.readTime && (
-                <span className="flex items-center">
-                  <span className="mr-1">📚</span>
-                  {post.readTime} min read
-                </span>
-              )}
-            </div>
+              <div className="flex flex-wrap items-center text-sm text-foreground mb-6">
+                {post.date && (
+                  <time className="mr-6" dateTime={post.date}>
+                    {new Date(post.date).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </time>
+                )}
+                
+                {post.readTime && (
+                  <span className="flex items-center">
+                    <span className="mr-1">📚</span>
+                    {post.readTime} min read
+                  </span>
+                )}
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {post.tags?.map((tag: string) => (
+                  <span 
+                    key={tag}
+                    className="px-3 py-1 text-sm rounded-full bg-accent text-primary-400"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </header>
             
-            <div className="flex flex-wrap gap-2">
-              {post.tags?.map((tag: string) => (
-                <span 
-                  key={tag}
-                  className="px-3 py-1 text-sm rounded-full bg-accent text-primary-400"
-                >
-                  {tag}
-                </span>
-              ))}
+            <div className="border-t border-accent pt-8">
+              <MarkdownContent content={post.content} />
             </div>
-          </header>
-          
-          <MarkdownContent content={post.content} />
+          </div>
         </article>
       </div>
     </div>
