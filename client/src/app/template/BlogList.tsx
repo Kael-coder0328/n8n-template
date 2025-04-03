@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Post } from '@/types/blog';
@@ -20,12 +20,14 @@ const CATEGORIES = [
 const SORT_OPTIONS = ['Newest', 'Alphabetical'] as const;
 type SortOption = typeof SORT_OPTIONS[number];
 
+const TEMPLATES_PER_PAGE = 10;
+
 interface BlogListProps {
   posts: Post[];
 }
 
 /**
- * BlogList component to display a list of templates with search and filter functionality
+ * BlogList component to display a list of templates with search, filter, and lazy loading
  */
 export default function BlogList({ posts }: BlogListProps) {
   const [searchQuery, setSearchQuery] = useState('');
@@ -35,6 +37,10 @@ export default function BlogList({ posts }: BlogListProps) {
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
   const [isPriceOpen, setIsPriceOpen] = useState(true);
   const [isTagsOpen, setIsTagsOpen] = useState(true);
+  const [visibleTemplates, setVisibleTemplates] = useState(TEMPLATES_PER_PAGE);
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const loadMoreRef = useRef<HTMLDivElement>(null);
 
   // Get unique tags from all posts
   const allTags = Array.from(new Set(posts.flatMap(post => post.tags ?? []))).sort();
@@ -65,6 +71,44 @@ export default function BlogList({ posts }: BlogListProps) {
         return 0;
     }
   });
+
+  // Get current page of posts
+  const currentPosts = sortedPosts.slice(0, visibleTemplates);
+  const hasMore = visibleTemplates < sortedPosts.length;
+
+  // Setup intersection observer for infinite scroll
+  useEffect(() => {
+    if (!loadMoreRef.current) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (first.isIntersecting && hasMore && !isLoading) {
+          loadMoreTemplates();
+        }
+      },
+      { threshold: 0.1 }
+    );
+
+    observer.observe(loadMoreRef.current);
+
+    return () => observer.disconnect();
+  }, [hasMore, isLoading, visibleTemplates]);
+
+  // Load more templates
+  const loadMoreTemplates = () => {
+    setIsLoading(true);
+    // Simulate loading delay
+    setTimeout(() => {
+      setVisibleTemplates(prev => prev + TEMPLATES_PER_PAGE);
+      setIsLoading(false);
+    }, 500);
+  };
+
+  // Reset pagination when filters change
+  useEffect(() => {
+    setVisibleTemplates(TEMPLATES_PER_PAGE);
+  }, [searchQuery, selectedCategories, selectedTags, sortBy]);
 
   const toggleCategory = (category: string) => {
     setSelectedCategories(prev => {
@@ -239,12 +283,12 @@ export default function BlogList({ posts }: BlogListProps) {
           {/* Sort dropdown */}
           <div className="flex justify-between items-center mb-6">
             <p className="text-sm text-gray-500">
-              Showing {sortedPosts.length} templates
+              Showing {currentPosts.length} of {sortedPosts.length} templates
             </p>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="px-8 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
               {SORT_OPTIONS.map(option => (
                 <option key={option} value={option}>
@@ -256,7 +300,7 @@ export default function BlogList({ posts }: BlogListProps) {
 
           {/* Templates Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            {sortedPosts.map((post) => (
+            {currentPosts.map((post) => (
               <div
                 key={post.slug}
                 className="flex flex-col bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
@@ -300,6 +344,24 @@ export default function BlogList({ posts }: BlogListProps) {
               </div>
             ))}
           </div>
+
+          {/* Loading indicator and intersection observer target */}
+          {hasMore && (
+            <div
+              ref={loadMoreRef}
+              className="flex justify-center items-center py-8"
+            >
+              {isLoading ? (
+                <div className="flex items-center space-x-2">
+                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
+                </div>
+              ) : (
+                <span className="text-sm text-gray-500">Loading more templates...</span>
+              )}
+            </div>
+          )}
         </div>
       </div>
     </div>
