@@ -1,6 +1,7 @@
 'use client'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 /**
  * Demo section component that showcases the product through a video demonstration
@@ -59,12 +60,17 @@ export function Demo() {
           <p className="text-lg text-light-muted dark:text-dark-muted mb-8">
             Ready to transform your workflow?
           </p>
-          <a
-            href="#pricing"
-            className="inline-flex items-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-light-accent dark:bg-dark-accent hover:opacity-90 transition-opacity"
-          >
-            Get Started
-          </a>
+          <div className="mt-10 flex items-center gap-x-6">
+            <Link
+              href="/demo"
+              className="rounded-md bg-primary-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+            >
+              Try Demo
+            </Link>
+            <Link href="/blog" className="text-sm font-semibold leading-6 text-light-foreground dark:text-dark-foreground">
+              Learn more <span aria-hidden="true">→</span>
+            </Link>
+          </div>
         </motion.div>
       </div>
     </section>
