@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="800" height="450" viewBox="0 0 800 450" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="800" height="450" fill="#F3F4F6"/>
+  
+  <!-- Decorative elements -->
+  <circle cx="400" cy="225" r="160" fill="#E5E7EB" fill-opacity="0.5"/>
+  <circle cx="400" cy="225" r="120" fill="#D1D5DB" fill-opacity="0.5"/>
+  
+  <!-- n8n logo placeholder -->
+  <g transform="translate(300,165)">
+    <!-- Outer hexagon -->
+    <path d="M100 0 L200 57.735 L200 173.205 L100 230.94 L0 173.205 L0 57.735 Z" fill="#6366F1" fill-opacity="0.1"/>
+    <!-- Inner hexagon -->
+    <path d="M100 40 L170 77.735 L170 153.205 L100 190.94 L30 153.205 L30 77.735 Z" fill="#6366F1" fill-opacity="0.2"/>
+    <!-- Center hexagon -->
+    <path d="M100 80 L140 97.735 L140 133.205 L100 150.94 L60 133.205 L60 97.735 Z" fill="#6366F1"/>
+  </g>
+  
+  <!-- Flow lines -->
+  <path d="M200 225 C300 225, 300 125, 400 125 S500 225, 600 225" stroke="#6366F1" stroke-width="2" stroke-opacity="0.3" fill="none"/>
+  <path d="M200 225 C300 225, 300 325, 400 325 S500 225, 600 225" stroke="#6366F1" stroke-width="2" stroke-opacity="0.3" fill="none"/>
+  
+  <!-- Small decorative dots -->
+  <circle cx="200" cy="225" r="4" fill="#6366F1"/>
+  <circle cx="600" cy="225" r="4" fill="#6366F1"/>
+  <circle cx="400" cy="125" r="4" fill="#6366F1"/>
+  <circle cx="400" cy="325" r="4" fill="#6366F1"/>
+</svg> 
