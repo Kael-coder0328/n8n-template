@@ -101,8 +101,8 @@ export default function NewsletterSubscription() {
             </div>
           </div>
           <p className="mt-3 text-xs text-light-muted dark:text-dark-muted text-center">
-            We care about your data in our <a href="/privacy" className="font-medium text-primary-600 hover:text-primary-500">privacy policy</a>.
-          </p>
+              We care about your data in our <a href="/legal?tab=privacy" className="font-medium text-primary-600 hover:text-primary-500">privacy policy</a>.
+            </p>
         </form>
       </div>
     </div>
