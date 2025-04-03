@@ -16,6 +16,10 @@ const CATEGORIES = [
   'Project Management'
 ];
 
+// Sort options
+const SORT_OPTIONS = ['Newest', 'Alphabetical'] as const;
+type SortOption = typeof SORT_OPTIONS[number];
+
 interface BlogListProps {
   posts: Post[];
 }
@@ -27,7 +31,7 @@ export default function BlogList({ posts }: BlogListProps) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [sortBy, setSortBy] = useState('Most Popular');
+  const [sortBy, setSortBy] = useState<SortOption>('Newest');
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
   const [isPriceOpen, setIsPriceOpen] = useState(true);
   const [isTagsOpen, setIsTagsOpen] = useState(true);
@@ -53,8 +57,6 @@ export default function BlogList({ posts }: BlogListProps) {
   // Sort posts based on selected option
   const sortedPosts = [...filteredPosts].sort((a, b) => {
     switch (sortBy) {
-      case 'Most Popular':
-        return new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime();
       case 'Newest':
         return new Date(b.date || 0).getTime() - new Date(a.date || 0).getTime();
       case 'Alphabetical':
@@ -241,12 +243,14 @@ export default function BlogList({ posts }: BlogListProps) {
             </p>
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              onChange={(e) => setSortBy(e.target.value as SortOption)}
+              className="px-8 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             >
-              <option>Most Popular</option>
-              <option>Newest</option>
-              <option>Alphabetical</option>
+              {SORT_OPTIONS.map(option => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
             </select>
           </div>
 
