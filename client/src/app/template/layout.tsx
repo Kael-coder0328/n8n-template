@@ -1,4 +1,5 @@
 import React from 'react';
+import { Footer } from '@/components/Footer'; // Importing Footer component
 
 /**
  * Layout for the blog section
@@ -10,8 +11,11 @@ export default function BlogLayout({
   children: React.ReactNode
 }) {
   return (
-    <main>
-      {children}
-    </main>
+    <>
+      <main>
+        {children}
+      </main>
+      <Footer /> {/* Adding Footer component */}
+    </>
   );
 } 
