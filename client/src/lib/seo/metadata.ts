@@ -7,15 +7,15 @@ import { Metadata } from 'next';
 
 // Base site configuration - edit these values for your site
 const baseSeoConfig = {
-  siteName: 'YourSiteName',
+  siteName: 'n8n Templates',
   titleSeparator: ' | ',
-  baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com',
+  baseUrl: process.env.NEXT_PUBLIC_SITE_URL || 'https://n8ntemplates.prosamik.com',
   defaultLocale: 'en-US',
   // Default social image dimensions (1200x630 is recommended for social shares)
   defaultImageWidth: 1200,
   defaultImageHeight: 630,
-  defaultDescription: 'Your default site description that appears when no custom description is provided.',
-  twitterHandle: '@yourtwitterhandle',
+  defaultDescription: 'Free n8n templates for Solopreneurs and small teams.',
+  twitterHandle: '@prosamik',
 };
 
 // Default open graph image path - update this with your actual image path
