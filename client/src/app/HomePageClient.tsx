@@ -14,7 +14,7 @@ import { FeaturedTemplates } from '@/components/landing/FeaturedTemplates'
  */
 export default function HomePageClient() {
   return (
-    <div className="min-h-screen bg-light-background dark:bg-dark-background">
+    <div className="bg-light-background dark:bg-dark-background">
       <Hero />
       <Features />
       <FeaturedTemplates />
