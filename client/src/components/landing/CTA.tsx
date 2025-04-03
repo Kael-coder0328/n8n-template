@@ -14,7 +14,7 @@ export function CTA() {
         </p>
         <div className="mt-10 flex items-center justify-center gap-x-6">
           <Link
-            href="/auth/signup"
+            href="/blog"
             className="rounded-md bg-white px-3.5 py-2.5 text-sm font-semibold text-primary-600 shadow-sm hover:bg-primary-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             Get started
