@@ -15,10 +15,10 @@ export default function BlogPostNotFound() {
           Sorry, the blog post you are looking for does not exist or may have been moved.
         </p>
         <Link 
-          href="/blog"
-          className="inline-block px-6 py-3 bg-primary-400 text-white font-medium rounded-lg hover:bg-primary-500 transition-colors"
+          href="/template"
+          className="rounded-md bg-primary-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
         >
-          Browse All Articles
+          View All Templates
         </Link>
       </div>
     </div>
