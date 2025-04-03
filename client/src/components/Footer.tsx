@@ -4,14 +4,14 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 const navigation = {
-  company: [
+  main: [
     { name: 'About', href: '/about' },
-    { name: 'Template', href: '/template' },
+    { name: 'Templates', href: '/template' },
     { name: 'Contact', href: '/contact' },
   ],
-  products: [
-    { name: 'Templates', href: '/templates' },
+  resources: [
     { name: 'Documentation', href: '/docs' },
+    { name: 'Demo', href: '/#demo' },
   ],
   legal: [
     { name: 'Terms', href: '/terms' },
@@ -51,9 +51,9 @@ export function Footer() {
           </div>
           <div className="mt-16 grid grid-cols-3 gap-8 xl:col-span-2 xl:mt-0">
             <div>
-              <h3 className="text-sm font-semibold text-light-foreground dark:text-dark-foreground">Company</h3>
+              <h3 className="text-sm font-semibold text-light-foreground dark:text-dark-foreground">Main</h3>
               <ul role="list" className="mt-6 space-y-4">
-                {navigation.company.map((item) => (
+                {navigation.main.map((item) => (
                   <li key={item.name}>
                     <Link
                       href={item.href}
@@ -66,9 +66,9 @@ export function Footer() {
               </ul>
             </div>
             <div>
-              <h3 className="text-sm font-semibold text-light-foreground dark:text-dark-foreground">Products</h3>
+              <h3 className="text-sm font-semibold text-light-foreground dark:text-dark-foreground">Resources</h3>
               <ul role="list" className="mt-6 space-y-4">
-                {navigation.products.map((item) => (
+                {navigation.resources.map((item) => (
                   <li key={item.name}>
                     <Link
                       href={item.href}
