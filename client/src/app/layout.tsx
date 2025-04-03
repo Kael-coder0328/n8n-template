@@ -3,7 +3,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import { Toaster } from 'react-hot-toast'
 import { ThemeProvider } from '@/components/ThemeProvider'
-import { AuthProvider } from '@/contexts/AuthContext'
 import Navigation from '@/components/Navigation'
 import PageView from '@/components/PageView'
 import JsonLd from '@/components/seo/JsonLd'
@@ -78,18 +77,16 @@ export default function RootLayout({
         <JsonLd data={organizationData} />
         
         <ThemeProvider>
-          <AuthProvider>
-            <Navigation />
-            <PageView />
-            {children}
-            <PrismInit />
-            <Toaster 
-              position="bottom-right"
-              toastOptions={{
-                className: 'bg-light-background dark:bg-dark-background text-light-foreground dark:text-dark-foreground',
-              }}
-            />
-          </AuthProvider>
+          <Navigation />
+          <PageView />
+          {children}
+          <PrismInit />
+          <Toaster 
+            position="bottom-right"
+            toastOptions={{
+              className: 'bg-light-background dark:bg-dark-background text-light-foreground dark:text-dark-foreground',
+            }}
+          />
         </ThemeProvider>
       </body>
     </html>
