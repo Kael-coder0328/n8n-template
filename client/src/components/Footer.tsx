@@ -6,7 +6,7 @@ import Image from 'next/image'
 const navigation = {
   company: [
     { name: 'About', href: '/about' },
-    { name: 'Blog', href: '/blog' },
+    { name: 'Template', href: '/template' },
     { name: 'Contact', href: '/contact' },
   ],
   products: [
