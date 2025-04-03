@@ -72,12 +72,12 @@ import HomePageClient from './HomePageClient'
 // Generate metadata for homepage
 export const generateMetadata = (): Metadata => {
   return {
-    title: 'Modern SaaS Platform | Powerful Features for Your Business',
-    description: 'Our SaaS platform provides businesses with powerful tools for productivity, team collaboration, and growth. Start your free trial today!',
-    keywords: ['saas', 'platform', 'business software', 'productivity', 'collaboration', 'cloud service'],
+    title: 'n8n Templates for Solopreneurs and small teams',
+    description: 'Explore our collection of free n8n templates designed for solopreneurs and small teams to enhance productivity and streamline workflows.',
+    keywords: ['n8n', 'templates', 'solopreneurs', 'productivity', 'workflow automation', 'free resources'],
     openGraph: {
       type: 'website',
-      url: process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com',
+      url: process.env.NEXT_PUBLIC_SITE_URL || 'https://n8ntemplates.prosamik.com',
       images: [
         {
           url: '/images/og-image.jpg',
@@ -88,7 +88,7 @@ export const generateMetadata = (): Metadata => {
       ]
     },
     alternates: {
-      canonical: process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'
+      canonical: process.env.NEXT_PUBLIC_SITE_URL || 'https://n8ntemplates.prosamik.com'
     }
   }
 }
@@ -97,11 +97,11 @@ export const generateMetadata = (): Metadata => {
 const homePageData = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
-  name: 'SaaS Platform',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com',
+  name: 'n8n Free Templates',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://n8ntemplates.prosamik.com',
   potentialAction: {
     '@type': 'SearchAction',
-    target: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://example.com'}/search?q={search_term_string}`,
+    target: `${process.env.NEXT_PUBLIC_SITE_URL || 'https://n8ntemplates.prosamik.com'}/search?q={search_term_string}`,
     'query-input': 'required name=search_term_string'
   }
 }
