@@ -60,9 +60,9 @@ export function Demo() {
           <p className="text-lg text-light-muted dark:text-dark-muted mb-8">
             Ready to transform your workflow?
           </p>
-          <div className="mt-10 flex items-center gap-x-6">
+          <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link
-              href="/demo"
+              href="/#demo"
               className="rounded-md bg-primary-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
             >
               Try Demo
