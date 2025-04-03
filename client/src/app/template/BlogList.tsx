@@ -6,16 +6,6 @@ import Image from 'next/image';
 import { Post } from '@/types/blog';
 import { DEFAULT_BLOG_IMAGE } from '@/lib/image-utils';
 
-// Predefined categories
-const CATEGORIES = [
-  'All Categories',
-  'Client Management',
-  'Marketing',
-  'Finance',
-  'Sales',
-  'Project Management'
-];
-
 // Sort options
 const SORT_OPTIONS = ['Newest', 'Alphabetical'] as const;
 type SortOption = typeof SORT_OPTIONS[number];
@@ -42,8 +32,26 @@ export default function BlogList({ posts }: BlogListProps) {
   
   const loadMoreRef = useRef<HTMLDivElement>(null);
 
-  // Get unique tags from all posts
-  const allTags = Array.from(new Set(posts.flatMap(post => post.tags ?? []))).sort();
+  // Get unique categories from first tag of each post
+  const categories = [
+    'All Categories',
+    ...Array.from(
+      new Set(
+        posts
+          .map(post => post.tags?.[0])
+          .filter((tag): tag is string => typeof tag === 'string')
+      )
+    ).sort()
+  ];
+
+  // Get unique tags from all posts (excluding the first tag which is used as category)
+  const allTags = Array.from(
+    new Set(
+      posts.flatMap(post => 
+        (post.tags?.slice(1) ?? []).filter((tag): tag is string => typeof tag === 'string')
+      )
+    )
+  ).sort();
 
   // Filter posts based on search query, categories, and tags
   const filteredPosts = posts.filter(post => {
@@ -55,7 +63,7 @@ export default function BlogList({ posts }: BlogListProps) {
                           (post.tags?.[0] && selectedCategories.includes(post.tags[0]));
     
     const matchesTags = selectedTags.length === 0 ||
-                       (post.tags?.some(tag => selectedTags.includes(tag)) ?? false);
+                       (post.tags?.slice(1).some(tag => selectedTags.includes(tag)) ?? false);
     
     return matchesSearch && matchesCategory && matchesTags;
   });
@@ -180,9 +188,9 @@ export default function BlogList({ posts }: BlogListProps) {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
-            {isCategoryOpen && (
+            {isCategoryOpen && categories.length > 1 && (
               <div className="space-y-2">
-                {CATEGORIES.map((category) => (
+                {categories.map((category) => (
                   <label key={category} className="flex items-center space-x-3">
                     <input
                       type="checkbox"
@@ -194,6 +202,9 @@ export default function BlogList({ posts }: BlogListProps) {
                   </label>
                 ))}
               </div>
+            )}
+            {isCategoryOpen && categories.length <= 1 && (
+              <p className="text-sm text-gray-500">No categories available</p>
             )}
           </div>
 
