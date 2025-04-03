@@ -3,6 +3,7 @@
 import React from 'react';
 import BlogList from './BlogList';
 import { Post } from '@/types/blog';
+import Link from 'next/link';
 
 /**
  * Props for the BlogPageClient component
@@ -18,11 +19,14 @@ const BlogPageClient: React.FC<BlogPageClientProps> = ({ posts }) => {
   return (
     <div className="min-h-screen bg-background pt-16 pb-24">
       <div className="container mx-auto px-4">
-        <header className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-primary-400 mb-6">Our Blog</h1>
-          <p className="text-xl text-foreground max-w-3xl mx-auto">
-            Insights, tutorials, and updates from our team to help you build better software
-          </p>
+        <header className="max-w-7xl mx-auto px-4 sm:px-2 lg:px-8 py-8">
+      {/* Header */}
+          <div className="flex items-center justify-between mb-8">
+            <Link href="/" className="text-sm font-medium text-gray-500 hover:text-gray-700">
+              ← Back to Home
+            </Link>
+            <h1 className="ml-5 text-3xl font-bold">Browse Templates</h1>
+          </div>
         </header>
         
         <BlogList posts={posts} />
