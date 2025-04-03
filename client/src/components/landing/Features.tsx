@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 'use client'
 
 // Feature list for the landing page
@@ -41,7 +39,7 @@ const features = [
 
 export function Features() {
   return (
-    <div id="features" className="mx-auto max-w-7xl px-6 lg:px-8 py-24 sm:py-32">
+    <div id="features" className="mx-auto max-w-7xl px-6 lg:px-8 py-8 sm:py-20">
       <div className="mx-auto max-w-2xl lg:text-center">
         <h2 className="text-3xl font-bold tracking-tight sm:text-4xl text-light-foreground dark:text-dark-foreground">
           Built for Solopreneurs
