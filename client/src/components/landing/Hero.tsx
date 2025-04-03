@@ -1,7 +1,6 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRightIcon } from '@heroicons/react/24/outline'
 
 /**
  * Hero component for the landing page
@@ -9,7 +8,7 @@ import { ArrowRightIcon } from '@heroicons/react/24/outline'
  */
 export function Hero() {
   return (
-    <div className="relative isolate">
+    <div className="relative isolate pt-14">
       {/* Background gradient */}
       <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
         <div
@@ -24,25 +23,25 @@ export function Hero() {
       {/* Hero content */}
       <div className="mx-auto max-w-7xl px-6 py-24 sm:py-32 lg:px-8">
         <div className="mx-auto max-w-2xl text-center">
-          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl">
-            Build Something Amazing with Our SaaS Platform
+          <h1 className="text-4xl font-bold tracking-tight sm:text-6xl text-light-foreground dark:text-dark-foreground">
+            n8n Templates for Solopreneurs
           </h1>
           <p className="mt-6 text-lg leading-8 text-light-muted dark:text-dark-muted">
-            Get started with our modern, scalable, and secure platform. We provide all the tools you need to build and grow your business.
+            Save hours of setup time with ready-to-use automation templates designed specifically for solopreneurs.
           </p>
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link
-              href="/blog"
-              className="rounded-md bg-primary-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-primary-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+              href="/templates"
+              className="rounded-md bg-primary-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
             >
-              Get started
-              <ArrowRightIcon className="ml-2 -mr-1 h-4 w-4 inline-block" />
+              Browse Templates
+              <span className="ml-2 inline-block">→</span>
             </Link>
             <Link
-              href="/#demo"
-              className="text-sm font-semibold leading-6"
+              href="/about"
+              className="rounded-md bg-light-background dark:bg-dark-background px-6 py-3 text-base font-semibold text-light-foreground dark:text-dark-foreground border border-light-accent dark:border-dark-accent hover:bg-light-accent/10 dark:hover:bg-dark-accent/10 transition-colors"
             >
-              Demo <span aria-hidden="true">→</span>
+              Learn More
             </Link>
           </div>
         </div>
