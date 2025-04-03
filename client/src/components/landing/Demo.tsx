@@ -67,8 +67,8 @@ export function Demo() {
             >
               Try Demo
             </Link>
-            <Link href="/blog" className="text-sm font-semibold leading-6 text-light-foreground dark:text-dark-foreground">
-              Learn more <span aria-hidden="true">→</span>
+            <Link href="/template" className="text-sm font-semibold leading-6 text-light-foreground dark:text-dark-foreground">
+              View Templates <span aria-hidden="true">→</span>
             </Link>
           </div>
         </motion.div>
