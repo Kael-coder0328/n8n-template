@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { authService } from '@/services/auth';
 
 /**
  * PageView component tracks page views for analytics purposes.
@@ -33,14 +32,25 @@ export default function PageView() {
         // Add to tracked paths before making the request
         trackedPaths.current.add(fullPath);
 
-        await authService.post('/api/analytics/pageview', {
-          path: fullPath,
-          referrer: document.referrer || '',
-          timestamp: new Date().toISOString(),
-          userAgent: navigator.userAgent,
-          screenResolution: `${window.screen.width}x${window.screen.height}`,
-          language: navigator.language
+        const response = await fetch('/api/analytics/pageview', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            path: fullPath,
+            referrer: document.referrer || '',
+            timestamp: new Date().toISOString(),
+            userAgent: navigator.userAgent,
+            screenResolution: `${window.screen.width}x${window.screen.height}`,
+            language: navigator.language
+          }),
         });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         console.log('[Analytics] Page view tracked:', fullPath);
       } catch (error) {
         // Remove from tracked paths if request fails
