@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState} from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
@@ -30,18 +30,6 @@ const Navigation = () => {
 
             {/* Desktop Navigation Links */}
             <div className="hidden md:flex space-x-6">
-              <button
-                onClick={() => {
-                  if (pathname === '/') {
-                    document.querySelector('#pricing')?.scrollIntoView({ behavior: 'smooth' })
-                  } else {
-                    router.push('/#pricing')
-                  }
-                }}
-                className="text-sm font-medium text-light-foreground dark:text-dark-foreground hover:text-primary-600 transition-colors"
-              >
-                Pricing
-              </button>
               <button
                 onClick={() => {
                   if (pathname === '/') {
@@ -85,19 +73,6 @@ const Navigation = () => {
         {isMobileMenuOpen && (
           <div className="md:hidden absolute top-16 left-0 right-0 bg-light-background dark:bg-dark-background border-b border-light-accent dark:border-dark-accent">
             <div className="space-y-1 px-4 py-2">
-              <button
-                onClick={() => {
-                  if (pathname === '/') {
-                    document.querySelector('#pricing')?.scrollIntoView({ behavior: 'smooth' })
-                  } else {
-                    router.push('/#pricing')
-                  }
-                  setIsMobileMenuOpen(false)
-                }}
-                className="block w-full text-left py-2 text-base font-medium text-light-muted dark:text-dark-muted hover:text-light-foreground dark:hover:text-dark-foreground"
-              >
-                Pricing
-              </button>
               <button
                 onClick={() => {
                   if (pathname === '/') {
