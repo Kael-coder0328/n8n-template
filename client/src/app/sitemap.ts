@@ -74,10 +74,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.9,
     },
     {
-      url: `${baseUrl}/template-page`,
+      url: `${baseUrl}/template`,
       lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
+      changeFrequency: 'weekly',
+      priority: 0.9,
     },
   ];
   
@@ -97,6 +97,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }));
   
+  // Add template routes
+  const templateRoutes = blogPosts.map((post) => ({
+    url: `${baseUrl}/template/${post.slug}`,
+    lastModified: post.lastModified,
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
+  
   // Combine all routes
-  return [...staticRoutes, ...blogRoutes, ...productRoutes];
+  return [...staticRoutes, ...blogRoutes, ...productRoutes, ...templateRoutes];
 } 
