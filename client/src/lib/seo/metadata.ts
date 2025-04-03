@@ -67,9 +67,9 @@ export const getFullTitle = (title?: string): string => {
  * @returns Full canonical URL with domain
  */
 export const getCanonicalUrl = (path?: string): string => {
-  if (!path || path === '/') return baseSeoConfig.baseUrl;
+  if (!path || path === '/') return 'https://prosamik.com'; // Updated to return the default site canonical URL
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
-  return `${baseSeoConfig.baseUrl}${cleanPath}`;
+  return `https://prosamik.com${cleanPath}`; // Updated to return the default site canonical URL
 };
 
 /**
