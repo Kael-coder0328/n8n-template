@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ThemeToggle } from './ThemeToggle'
+import Image from 'next/image'
 
 /**
  * Navigation component that displays the top navigation bar
@@ -23,9 +24,18 @@ const Navigation = () => {
           <div className="flex items-center space-x-8">
             <Link
               href="/"
-              className="flex items-center font-semibold text-light-foreground dark:text-dark-foreground hover:text-primary-600 transition-colors"
+              className="flex items-center space-x-2 font-semibold text-light-foreground dark:text-dark-foreground hover:text-primary-600 transition-colors"
             >
-              SaaS Platform
+              <div className="relative h-8 w-8 overflow-hidden rounded-lg bg-light-accent/10 dark:bg-dark-accent/10">
+                <Image
+                  src="/placeholder-template.svg"
+                  alt="n8n Templates"
+                  width={32}
+                  height={32}
+                  className="object-cover"
+                />
+              </div>
+              <span>n8n Templates</span>
             </Link>
 
             {/* Desktop Navigation Links */}
@@ -43,10 +53,10 @@ const Navigation = () => {
                 Demo
               </button>
               <Link
-                href="/blog"
+                href="/template"
                 className="text-sm font-medium text-light-foreground dark:text-dark-foreground hover:text-primary-600 transition-colors"
               >
-                Blog
+                Templates
               </Link>
             </div>
           </div>
@@ -87,11 +97,11 @@ const Navigation = () => {
                 Demo
               </button>
               <Link
-                href="/blog"
+                href="/template"
                 className="block py-2 text-base font-medium text-light-muted dark:text-dark-muted hover:text-light-foreground dark:hover:text-dark-foreground"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Blog
+                Templates
               </Link>
             </div>
           </div>
