@@ -142,8 +142,8 @@ export default function BlogList({ posts }: BlogListProps) {
   if (!posts || posts.length === 0) {
     return (
       <div className="text-center py-12">
-        <h2 className="text-2xl font-semibold mb-4">No templates found</h2>
-        <p className="text-gray-500">Check back later for new templates.</p>
+        <h2 className="text-2xl font-semibold mb-4 text-light-foreground dark:text-dark-foreground">No templates found</h2>
+        <p className="text-light-muted dark:text-dark-muted">Check back later for new templates.</p>
       </div>
     );
   }
@@ -155,16 +155,16 @@ export default function BlogList({ posts }: BlogListProps) {
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 mb-8">
         <div className="lg:col-span-1 space-y-6">
           <div>
-            <h2 className="text-lg font-semibold mb-4">Search</h2>
+            <h2 className="text-lg font-semibold mb-4 text-light-foreground dark:text-dark-foreground">Search</h2>
             <div className="relative">
               <input
                 type="text"
                 placeholder="Search templates..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-light-accent dark:border-dark-accent rounded-md bg-light-background dark:bg-dark-background text-light-foreground dark:text-dark-foreground focus:ring-2 focus:ring-primary-500 focus:border-transparent placeholder-light-muted dark:placeholder-dark-muted"
               />
-              <span className="absolute right-3 top-2.5 text-gray-400">
+              <span className="absolute right-3 top-2.5 text-light-muted dark:text-dark-muted">
                 <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                 </svg>
@@ -173,10 +173,10 @@ export default function BlogList({ posts }: BlogListProps) {
           </div>
 
           {/* Categories Section */}
-          <div className="border-t border-gray-200 pt-6">
+          <div className="border-t border-light-accent dark:border-dark-accent pt-6">
             <button
               onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-              className="flex justify-between items-center w-full text-lg font-semibold mb-4"
+              className="flex justify-between items-center w-full text-lg font-semibold mb-4 text-light-foreground dark:text-dark-foreground"
             >
               <span>Categories</span>
               <svg
@@ -196,9 +196,9 @@ export default function BlogList({ posts }: BlogListProps) {
                       type="checkbox"
                       checked={selectedCategories.includes(category)}
                       onChange={() => toggleCategory(category)}
-                      className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-[#FF4405] focus:ring-[#FF4405] border-light-accent dark:border-dark-accent rounded bg-white dark:bg-dark-background"
                     />
-                    <span className="text-sm text-gray-600">{category}</span>
+                    <span className="text-sm text-light-foreground dark:text-dark-foreground">{category}</span>
                   </label>
                 ))}
               </div>
@@ -208,11 +208,11 @@ export default function BlogList({ posts }: BlogListProps) {
             )}
           </div>
 
-          {/* Price Range Section - Placeholder */}
-          <div className="border-t border-gray-200 pt-6">
+          {/* Price Range Section */}
+          <div className="border-t border-light-accent dark:border-dark-accent pt-6">
             <button
               onClick={() => setIsPriceOpen(!isPriceOpen)}
-              className="flex justify-between items-center w-full text-lg font-semibold mb-4"
+              className="flex justify-between items-center w-full text-lg font-semibold mb-4 text-light-foreground dark:text-dark-foreground"
             >
               <span>Price Range</span>
               <svg
@@ -225,17 +225,15 @@ export default function BlogList({ posts }: BlogListProps) {
               </svg>
             </button>
             {isPriceOpen && (
-              <div className="space-y-2">
-                <p className="text-sm text-gray-500">All templates are free</p>
-              </div>
+              <p className="text-light-muted dark:text-dark-muted">All templates are free</p>
             )}
           </div>
 
           {/* Tags Section */}
-          <div className="border-t border-gray-200 pt-6">
+          <div className="border-t border-light-accent dark:border-dark-accent pt-6">
             <button
               onClick={() => setIsTagsOpen(!isTagsOpen)}
-              className="flex justify-between items-center w-full text-lg font-semibold mb-4"
+              className="flex justify-between items-center w-full text-lg font-semibold mb-4 text-light-foreground dark:text-dark-foreground"
             >
               <span>Tags</span>
               <svg
@@ -253,11 +251,11 @@ export default function BlogList({ posts }: BlogListProps) {
                   <button
                     key={tag}
                     onClick={() => toggleTag(tag)}
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-sm ${
-                      selectedTags.includes(tag)
-                        ? 'bg-primary-100 text-primary-700'
-                        : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
-                    }`}
+                    className={`px-3 py-1 rounded-full text-sm font-medium transition-colors
+                      ${selectedTags.includes(tag)
+                        ? 'bg-[#FF4405] text-white'
+                        : 'bg-white dark:bg-dark-background border border-light-accent dark:border-dark-accent text-light-foreground dark:text-dark-foreground hover:bg-light-accent/5 dark:hover:bg-dark-accent/5'
+                      }`}
                   >
                     {tag}
                   </button>
@@ -266,17 +264,15 @@ export default function BlogList({ posts }: BlogListProps) {
             )}
           </div>
 
-          {/* Apply Filters Button */}
           <button
             onClick={() => {
-              // Reset filters
               setSelectedCategories([]);
               setSelectedTags([]);
               setSearchQuery('');
             }}
-            className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800"
+            className="w-full flex items-center justify-center space-x-2 px-4 py-2 mt-4 text-sm font-medium text-white bg-[#FF4405] hover:bg-[#E43D04] rounded-md transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF4405]"
           >
-            <svg className="w-5 h-5 transform rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
             </svg>
             <span>Apply Filters</span>
@@ -286,15 +282,15 @@ export default function BlogList({ posts }: BlogListProps) {
         <div className="lg:col-span-3">
           {/* Sort dropdown */}
           <div className="flex justify-between items-center mb-6">
-            <p className="text-sm text-gray-500">
+            <p className="text-light-muted dark:text-dark-muted">
               Showing {currentPosts.length} of {sortedPosts.length} templates
             </p>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as SortOption)}
-              className="px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="px-3 py-2 border border-light-accent dark:border-dark-accent rounded-md bg-white dark:bg-dark-background text-light-foreground dark:text-dark-foreground focus:ring-2 focus:ring-[#FF4405] focus:border-transparent"
             >
-              {SORT_OPTIONS.map(option => (
+              {SORT_OPTIONS.map((option) => (
                 <option key={option} value={option}>
                   {option}
                 </option>
@@ -303,69 +299,59 @@ export default function BlogList({ posts }: BlogListProps) {
           </div>
 
           {/* Templates Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {currentPosts.map((post) => (
-              <div
+              <Link
                 key={post.slug}
-                className="flex flex-col bg-white border border-gray-200 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300"
+                href={`/template/${post.slug}`}
+                className="group flex flex-col overflow-hidden rounded-2xl border border-light-accent dark:border-dark-accent bg-light-background dark:bg-dark-background shadow-sm transition-all hover:shadow-md"
               >
-                <div className="relative h-48 bg-gray-100">
+                <div className="relative h-48 overflow-hidden bg-light-accent/10 dark:bg-dark-accent/10">
                   <Image
                     src={post.imagePath || DEFAULT_BLOG_IMAGE}
                     alt={post.title}
                     fill
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-                </div>
-                <div className="p-5 flex flex-col flex-grow">
-                  {post.tags?.[0] && (
-                    <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-900 text-white mb-3">
-                      {post.tags[0]}
+                  <div className="absolute bottom-2 left-2">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-md text-xs font-medium bg-[#0A0F1C] dark:bg-dark-background text-white">
+                      {post.tags?.[0]}
                     </span>
-                  )}
-                  <h2 className="text-xl font-semibold mb-3">{post.title}</h2>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-2">
-                    {post.description}
-                  </p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {post.tags?.slice(1, 4).map((tag) => (
+                  </div>
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <div className="flex-1">
+                    <h3 className="text-xl font-semibold text-light-foreground dark:text-dark-foreground group-hover:text-primary-600 transition-colors">
+                      {post.title}
+                    </h3>
+                    <p className="mt-3 text-base text-light-muted dark:text-dark-muted">
+                      {post.description}
+                    </p>
+                  </div>
+                  <div className="mt-4 flex flex-wrap gap-2">
+                    {post.tags?.slice(1).map((tag) => (
                       <span
                         key={tag}
-                        className="inline-block bg-gray-100 rounded-md px-2 py-1 text-xs text-gray-600"
+                        className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-light-accent/10 dark:bg-dark-accent/10 text-light-foreground dark:text-dark-foreground"
                       >
                         {tag}
                       </span>
                     ))}
                   </div>
-                  <Link
-                    href={`/template/${post.slug}`}
-                    className="mt-auto inline-flex justify-center items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
-                  >
-                    View
-                  </Link>
                 </div>
-              </div>
+              </Link>
             ))}
           </div>
 
-          {/* Loading indicator and intersection observer target */}
-          {hasMore && (
-            <div
-              ref={loadMoreRef}
-              className="flex justify-center items-center py-8"
-            >
-              {isLoading ? (
-                <div className="flex items-center space-x-2">
-                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-                  <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
-                </div>
-              ) : (
-                <span className="text-sm text-gray-500">Loading more templates...</span>
-              )}
+          {/* Loading indicator */}
+          {isLoading && (
+            <div className="flex justify-center mt-8">
+              <div className="w-6 h-6 border-2 border-primary-600 border-t-transparent rounded-full animate-spin"></div>
             </div>
           )}
+
+          {/* Intersection observer target */}
+          <div ref={loadMoreRef} className="h-4" />
         </div>
       </div>
     </div>
