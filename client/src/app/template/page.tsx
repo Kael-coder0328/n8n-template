@@ -6,11 +6,11 @@ import { fetchAllBlogPosts } from './actions';
  * Metadata for the blog page
  */
 export const metadata = {
-  title: 'Blog | Our Latest Articles and Insights',
-  description: 'Read our latest articles, tutorials, and insights about software development, DevOps, and more.',
+  title: 'Templates',
+  description: 'n8n templates for Solopreneurs',
   openGraph: {
-    title: 'Blog | Our Latest Articles and Insights',
-    description: 'Read our latest articles, tutorials, and insights about software development, DevOps, and more.',
+    title: 'Templates',
+    description: 'n8n templates for Solopreneurs',
     type: 'website',
   },
 };
